@@ -17,6 +17,11 @@
   },
   "homepage": "https://github.com/yaorenmao/JS-Game#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "socket.io": "^4.3.0"
+  },
+  "devDependencies": {
+    "bufferutil": "^4.0.5",
+    "utf-8-validate": "^5.0.7"
   }
 }

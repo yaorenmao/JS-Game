@@ -1,3 +1,4 @@
+//aka client
 let canvas = document.getElementById("canvasik");
 let ctx = canvas.getContext("2d");
 ctx.font = '48px serif';
@@ -10,6 +11,9 @@ let obj = {
   enemySpeed: 1,
   ball: []
 };
+
+
+
 function random(n) {
   return Math.floor(Math.random() * n);
 }
