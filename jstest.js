@@ -47,7 +47,7 @@ function update() {/// main
 		ctx.fill();
 	}
 }
-setInterval(update, 3);///20ms было
+setInterval(update, 20);///20ms было
 
 function mouseClick(event) {
 	if(!click)
