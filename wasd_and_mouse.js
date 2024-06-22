@@ -1,8 +1,10 @@
-// Создаем объект библиотеки
-const MyLibrary = (function() {
+const Xir = (function() {
     let isPointerLocked = false;
     let key = {};
     let camera, renderer, scene, euler, lastTime;
+    let cube;
+    const uiElements = new Map();
+    let elementCounter = 0;
 
     function init(container) {
         scene = new THREE.Scene();
@@ -47,7 +49,57 @@ const MyLibrary = (function() {
 
         window.addEventListener('resize', onWindowResize);
 
+        cube = createCube(); // Создаем куб при инициализации
+
         animate();
+    }
+
+    function createCube() {
+        const cubeGeometry = new THREE.BoxGeometry();
+        const cubeMaterial = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff });
+        const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+
+        const cameraDirection = new THREE.Vector3();
+        camera.getWorldDirection(cameraDirection);
+        cube.position.set(
+            camera.position.x + cameraDirection.x * 10,
+            camera.position.y + cameraDirection.y * 10,
+            camera.position.z + cameraDirection.z * 10
+        );
+
+        scene.add(cube);
+        return cube;
+    }
+
+    function newUI() {
+        const id = elementCounter++;
+        uiElements.set(id, null);
+        return id;
+    }
+
+    function setText(id, text, x = 0, y = 0, z = 0, color = undefined, follow = undefined) {
+        let element = uiElements.get(id);
+        if (!element) {
+            element = document.createElement('div');
+            element.style.color = 'rgba(255, 255, 255, 1)';
+            element.style.fontSize = '20px';
+            element.style.pointerEvents = 'none';
+            element.classList.add('overlay-text');
+            document.body.appendChild(element);
+            uiElements.set(id, element);
+        }
+        element.textContent = text;
+        if (color !== undefined) element.style.color = color;
+        if (follow !== undefined) {
+            const textLabel = new THREE.CSS2DObject(element);
+            textLabel.position.set(x, y, z);
+            follow.add(textLabel);
+            uiElements.set(id, textLabel);
+        } else {
+            element.style.position = 'absolute';
+            element.style.left = `${x}px`;
+            element.style.top = `${y}px`;
+        }
     }
 
     function moveCamera(deltaTime) {
@@ -92,13 +144,14 @@ const MyLibrary = (function() {
     }
 
     return {
-        init: init
+        init: init,
+        newUI: newUI,
+        setText: setText
     };
 })();
 
-// Экспортируем библиотеку для использования в других файлах
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = MyLibrary;
+    module.exports = Xir;
 } else {
-    window.MyLibrary = MyLibrary;
+    window.Xir = Xir;
 }
