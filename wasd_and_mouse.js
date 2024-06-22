@@ -355,4 +355,18 @@
     }
 
     window.addEventListener('resize', onWindowResize);
+
+    // Expose functions to the global scope
+    window.MyLibrary = {
+        newUI,
+        setTxtField,
+        setSquare,
+        setCheckbox,
+        setButton,
+        setSlider,
+        setText,
+        removeElement,
+        makeElementDraggable,
+        syncSliderAndTextField
+    };
 })();
